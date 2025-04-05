@@ -20,7 +20,8 @@ connection.connect((err)=>{
         
          id INT AUTO_INCREMENT PRIMARY KEY,
          name VARCHAR(20),
-         email VARCHAR(20)
+         email VARCHAR(20),
+         age INT
     )`
 
 

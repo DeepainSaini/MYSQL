@@ -11,7 +11,7 @@ app.use('/students',studentRoutes);
 
 app.get('/',(req,res,next)=>{
     res.send('Hello World');
-})
+});
 
 app.listen(3000,(err)=>{
     console.log('server is running');
