@@ -3,16 +3,18 @@ const db = require('./util/db-connection');
 const app  = express();
 
 const studentRoutes = require('./routes/studenRoutes');
+const studentModel = require('./models/student');
 
 app.use(express.json());
 
 app.use('/students',studentRoutes);
 
+db.sync({force:true}).then(()=>{
+    app.listen(3000,(err)=>{
+        console.log('server is running');
+    });
 
-app.get('/',(req,res,next)=>{
-    res.send('Hello World');
-});
+}).catch((err)=>{
+    console.log(err);
+})
 
-app.listen(3000,(err)=>{
-    console.log('server is running');
-});
