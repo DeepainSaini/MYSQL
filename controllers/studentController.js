@@ -1,5 +1,7 @@
 const db = require('../util/db-connection');
-const Student = require('../models/student');
+const Students = require('../models/student');
+const IdentityCard = require('../models/identityCard');
+const { Departments } = require('../models');
 
 const addStudent = async (req,res,next) => {
     
@@ -19,6 +21,29 @@ const addStudent = async (req,res,next) => {
          res.status(500).send('Unable to make entry');
     }
 }
+
+const addValuesToStudentAndIdentityCardAndDepartment = async (req,res) => {
+
+    try{
+        const department = await Departments.create(req.body.department);
+        const student = await Students.create({
+            ...req.body.student,
+            departmentId : department.id
+        });
+        const idCard = await IdentityCard.create({
+            ...req.body.identityCard,
+            studentId : student.id
+        })
+        
+
+        res.status(200).json({department,student,idCard});
+    } catch(error){
+        console.log(error);
+        res.status(500).json({message : 'error while posting'});
+    }
+}
+
+
 
 const getStudents = async (req,res,next) => {
     
@@ -107,5 +132,6 @@ module.exports = {
     getStudents,
     getStudentWithId,
     updateStudentDetails,
-    deleteStudent
+    deleteStudent,
+    addValuesToStudentAndIdentityCardAndDepartment
 }
