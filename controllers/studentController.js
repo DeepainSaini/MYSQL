@@ -8,7 +8,7 @@ const addStudent = async (req,res,next) => {
     try{
        
         const {name,email,age} = req.body;
-        const student = await Student.create({
+        const student = await Students.create({
             name : name,
             email : email,
             age : age
@@ -25,7 +25,10 @@ const addStudent = async (req,res,next) => {
 const addValuesToStudentAndIdentityCardAndDepartment = async (req,res) => {
 
     try{
-        const department = await Departments.create(req.body.department);
+        const [department] = await Departments.findOrCreate({
+            where : {name : req.body.department.name},
+            defaults : req.body.department
+        })
         const student = await Students.create({
             ...req.body.student,
             departmentId : department.id
